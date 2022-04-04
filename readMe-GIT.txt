@@ -31,3 +31,6 @@ Common Git Commands:
   3. git commit -m "<commit message>"
     a. Commits changes to local git repository. These are now ready to be pushed to GitHub.
     b. Double quotes aroung commit message are required. Single quotes will bomb out.
+  4. git push -u origin main
+    a. Pushes the committed local changes to GitHub.
+    b. If you haven't set up the link to GitHub yet, see "Initialization (GitHub)" item 2 above.
