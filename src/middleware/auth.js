@@ -8,9 +8,10 @@ const auth = async (req, res, next) => {
         const user = await User.findOne({ _id: decoded._id, 'tokens.token': token })
         
         if (!user) {
-            throw new Error('Line 11')
+            throw new Error()
         }
 
+        req.token = token
         req.user = user
         next()
     } catch {
