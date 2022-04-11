@@ -15,19 +15,32 @@ router.post('/tasks', auth, async (req, res) => {
     } catch (e) {
         res.status(400).send(e)
     }
-
-    task.save().then(() => {
-        res.status(201).send(task)
-    }).catch((e) => {
-        res.status(400).send(e)
-    })
 })
 
 router.get('/tasks', auth, async (req, res) => {
+    const match = {}
+    const sort = {}
+
+    if (req.query.completed) {
+        match.completed = req.query.completed === 'true' // functions like an iif
+    }
+
+    if (req.query.sortBy) {
+        const parts = req.query.sortBy.split(':')
+        sort[parts[0]] = parts[1] === 'desc' ? -1 : 1
+    }
+
     try {
-        const tasks = await Task.find({ owner: req.user._id })
-        res.send(tasks)
-    } catch {
+        await req.user.populate({
+            path: 'tasks',
+            match,
+            options: { // can be used for pagination (limit and skip)
+                limit: parseInt(req.query.limit),
+                skip: parseInt(req.query.skip)
+            }
+        })
+        res.send(req.user.tasks)
+    } catch (e) {
         res.status(500).send()
     }
 })

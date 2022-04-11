@@ -1,7 +1,6 @@
 const mongoose = require('mongoose')
-//const validator = require('validator')
 
-const Task = mongoose.model('Task', {
+const taskSchema = new mongoose.Schema({
     title: {
         type: String,
         required: true,
@@ -9,7 +8,7 @@ const Task = mongoose.model('Task', {
     },
     description: {
         type: String,
-        required: false,
+        required: false,    
         trim: true
     },
     completed: {
@@ -21,22 +20,10 @@ const Task = mongoose.model('Task', {
         required: true,
         ref: 'User'
     }
-    
-    // userSort: [{
-    //     assignedTo: _id,
-    //     rank: Number
-    // }]
-
-    // TODO: Implement the below so that tasks can be assigned to someone and and can be made into sub-tasks
-
-    // assignedTo: { // Required: Harry may create a task and assign it to me. TODO: 
-    //     type: mongoose.Schema.Types.ObjectId,
-    //     required: true,
-    //     ref: 'User'
-    // },
-    // parentId: { // Optional: used if this is a sub-task
-    //     type: mongoose.Schema.Types.ObjectId
-    // } 
+}, {
+    timestamps: true
 })
+
+const Task = mongoose.model('Task', taskSchema)
 
 module.exports = Task
